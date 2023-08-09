@@ -1,10 +1,18 @@
-import PropTypes from 'prop-types';
 import css from './filterContact.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filter/filter-slice';
+import { getFilter } from 'redux/filter/filter-selectors';
 
-const FilterContact = props => {
-  const updateFilter = e => {
-    props.onFilter(e.target.value);
+const FilterContact = () => {
+  const dispatch = useDispatch();
+  const onSetFilter = payload => {
+    dispatch(setFilter(payload));
   };
+
+  const updateFilter = e => {
+    onSetFilter(e.target.value);
+  };
+  const filter = useSelector(getFilter);
 
   return (
     <div>
@@ -14,7 +22,7 @@ const FilterContact = props => {
       <input
         className={css.filterInput}
         type="text"
-        value={props.filter}
+        value={filter}
         onChange={updateFilter}
         placeholder="Search contacts"
       />
@@ -22,8 +30,3 @@ const FilterContact = props => {
   );
 };
 export default FilterContact;
-
-FilterContact.propTypes = {
-  filter: PropTypes.string.isRequired,
-  onFilter: PropTypes.func.isRequired,
-};
